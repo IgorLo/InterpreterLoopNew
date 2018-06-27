@@ -5,7 +5,7 @@
 #define SIZE_LEXEM 100 //Длина лексемы
 
 struct Lexem{
-    char name[SIZE_LEXEM];
+    char *name;
     int id;
     int type;
 };
@@ -28,7 +28,7 @@ struct LoopStack {
 };
 
 struct Variable {
-    char name[SIZE_LEXEM];
+    char *name;
     int value;
 };
 

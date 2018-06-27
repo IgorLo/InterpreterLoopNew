@@ -3,7 +3,7 @@
 
 #define INITIALIZED 1
 #define EXECUTING 2
-#define FINISHED 3
+#define ENDED 3
 
 #include "executor.h"
 

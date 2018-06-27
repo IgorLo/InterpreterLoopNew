@@ -1,8 +1,11 @@
 #include <mem.h>
 #include <stdlib.h>
+#include <ctype.h>
+
 #include "headers/loader.h"
 #include "headers/utilities.h"
 #include "headers/executor.h"
+#include "headers/tokenReader.h"
 
 struct Variable *addVariable(char *name, struct Program *program) {
     program->variablesCounter++;
@@ -20,13 +23,16 @@ struct Variable *addVariable(char *name, struct Program *program) {
     }
 
     struct Variable *result = bufferIndex;
-    strcpy(result->name, name);
+    result->name = mallocAndCopy(name, lenght(name));
     result->value = 0;
 
     return result;
 }
 
 struct Variable *findVariable(char *name, struct Program *program) {
+    if (isdigit(*name)){
+        return NULL;
+    }
     int i = 1;
     struct Variable *t = program->variablesPointer;
     while (i <= program->variablesCounter) {
@@ -36,7 +42,6 @@ struct Variable *findVariable(char *name, struct Program *program) {
         i++;
         t++;
     }
-    addVariable(name, program);
-    return findVariable(name, program);
+    return addVariable(name, program);
 }
 

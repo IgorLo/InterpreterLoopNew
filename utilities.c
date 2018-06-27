@@ -8,7 +8,7 @@ void printError(char *errorText) ;
 int countFileChars(char *fileName) {
     int lenght = 0;
     FILE *inputFile = fopen(fileName, "r");
-    if (inputFile == 0){
+    if (!inputFile){
         printError("Unable to read the program file.");
     }
     int ch;
@@ -21,7 +21,7 @@ int countFileChars(char *fileName) {
 }
 
 void printError(char *errorText) {
-    printf("Error!");
+    printf("Error!\n");
     printf(errorText);
     exit(1);
 }
@@ -30,6 +30,9 @@ void writeResult(char *fileName, struct Program *program) {
     FILE *inFile, *outFile;
     inFile = fopen(fileName, "r");
     outFile = fopen("../result.txt", "w");
+    if (!inFile){
+        printError("Unable to open file with out variables.");
+    }
     char name[SIZE_LEXEM];
     char *t = name;
     do {
@@ -48,4 +51,13 @@ void writeResult(char *fileName, struct Program *program) {
         }
 
     } while (!feof(inFile));
+}
+
+int lenght(char *name){
+    int counter = 0;
+    char *temp = name;
+    for (; *temp; temp++) {
+        counter++;
+    }
+    return counter;
 }

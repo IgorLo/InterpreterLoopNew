@@ -1,5 +1,6 @@
 #include <mem.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 #include "headers/loader.h"
 #include "headers/executor.h"
@@ -33,7 +34,8 @@ int isDelim(char c) {
 }
 
 void readToken(struct Program *program) {
-    char *token = TOKEN.name;
+//    char *token = TOKEN.name;
+    free(TOKEN.name);
     TOKEN.id = 0;
     TOKEN.type = 0;
 
@@ -42,7 +44,7 @@ void readToken(struct Program *program) {
 
     //Проверка конца программы
     if (*CHAR == 0) {
-        *TOKEN.name = 0;
+//        *TOKEN.name = 0;
         TOKEN.id = FINISHED;
         TOKEN.type = DELIMITER;
         return;
@@ -50,27 +52,29 @@ void readToken(struct Program *program) {
 
     //Проверка конца строки
     if (*CHAR == '\n') {
-        *token++ = *CHAR++;
-        *token = '\0';
+//        *token++ = *CHAR++;
+//        *token = '\0';
+        CHAR++;
         TOKEN.id = EOL;
         TOKEN.type = DELIMITER;
         return;
     }
 
+    char *tempStart = CHAR;
+
     //Првоерка разделителя
     if (strchr(":=+-*/%()<>", *CHAR)) {
         //Ищем знак присваивания
-
         if (*CHAR == ':') {
-            *token++ = *CHAR++;
+            CHAR++;
             if (*CHAR == '=') {
-                *token++ = *CHAR++;
-                *token = '\0';
+                TOKEN.name = mallocAndCopy(tempStart, 2);
+                CHAR++;
             } else
                 printError("\":=\" expected.");
         } else {
-            *token++ = *CHAR++;
-            *token = '\0';
+            TOKEN.name = mallocAndCopy(tempStart, 1);
+            CHAR++;
         }
         TOKEN.type = DELIMITER;
         return;
@@ -78,18 +82,24 @@ void readToken(struct Program *program) {
 
     //Проверка на число
     if (isdigit(*CHAR)) {
-        while (!isDelim(*CHAR))
-            *token++ = *CHAR++;
-        *token = '\0';
+        int counter = 0;
+        while (!isDelim(*CHAR)){
+            CHAR++;
+            counter++;
+        }
+        TOKEN.name = mallocAndCopy(tempStart, counter);
         TOKEN.type = NUMBER;
         return;
     }
 
     //Проверка на букву
     if (isalpha(*CHAR)) {
-        while (!isDelim(*CHAR))
-            *token++ = *CHAR++;
-        *token = '\0';
+        int counter = 0;
+        while (!isDelim(*CHAR)){
+            CHAR++;
+            counter++;
+        }
+        TOKEN.name = mallocAndCopy(tempStart, counter);
         TOKEN.id = getIdCommand(TOKEN.name);
         if (!TOKEN.id)
             TOKEN.type = VARIABLE;
@@ -102,6 +112,16 @@ void readToken(struct Program *program) {
 
 }
 
+char * mallocAndCopy(char *source, int steps) {
+    char *resultPointer = (char*) malloc((size_t) sizeof(char)*(steps + 1));
+    char *tempPointer = resultPointer;
+    for (int i = 0; i < steps; i++) {
+        *tempPointer++ = *source++;
+    }
+    *tempPointer = '\0';
+    return resultPointer;
+}
+
 int getIdCommand(char *command) {
     for (int i = 0; *commands[i].name; i++) {
         if (!strcmp(commands[i].name, command))
@@ -109,3 +129,8 @@ int getIdCommand(char *command) {
     }
     return 0;
 }
+
+int countTokenChars(struct Program *program){
+    int counter = 0;
+
+};

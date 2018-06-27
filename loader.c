@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
     executableProgram.currentChar = memory;
     executableProgram.fileNameOutVariables = fileNameVariables;
     executableProgram.variablesCounter = 0;
+    executableProgram.variablesPointer = (struct Variable*) malloc(sizeof(struct Variable));
     executableProgram.state = INITIALIZED;
 
     execute(executableProgram);

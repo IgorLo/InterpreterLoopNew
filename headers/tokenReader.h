@@ -21,5 +21,6 @@
 int isWhite(char ch);
 int isDelim(char ch);
 void readToken(struct Program *program);
+char *mallocAndCopy(char *start, int name);
 
 #endif //INTERPRETERLOOPNEW_TOKENREADER_H

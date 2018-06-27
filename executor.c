@@ -25,6 +25,14 @@ void assignment(struct Program *program);
 
 void execute(struct Program program) {
 
+    //Данная программа не предполагает возможность выполнения данных условий в этом месте, но мало ли
+    if (program.state == EXECUTING){
+        printError("DUDE! It's crazy but someone is already executing it! Stop them!");
+    }
+    if (program.state == ENDED){
+        printError("DUDE!1! I can't believe it but someone already executed your program!");
+    }
+
     struct LoopStack loopStack;
     loopStack.maxNesting = MAX_NESTING;
     loopStack.nestingLevel = 0;
@@ -42,7 +50,7 @@ void execute(struct Program program) {
 }
 
 void endProgram(struct Program *program) {
-    program->state = FINISHED;
+    program->state = ENDED;
     if (program->loopStack.nestingLevel != 0){
         printError("Loop is not closed with \"END\"");
     }
