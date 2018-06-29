@@ -23,7 +23,9 @@ int main(int argc, char *argv[]) {
     readFile(fileNameProgram, memory);
 
     struct Program executableProgram;
+    executableProgram.startChar = memory;
     executableProgram.currentToken = *((struct Lexem*) malloc(sizeof(struct Lexem)));
+    executableProgram.currentToken.name = NULL;
     executableProgram.currentChar = memory;
     executableProgram.fileNameOutVariables = fileNameVariables;
     executableProgram.variablesCounter = 0;

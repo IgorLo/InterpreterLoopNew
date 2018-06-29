@@ -50,11 +50,19 @@ void execute(struct Program program) {
 }
 
 void endProgram(struct Program *program) {
-    program->state = ENDED;
+
     if (program->loopStack.nestingLevel != 0){
         printError("Loop is not closed with \"END\"");
     }
+
+    program->state = ENDED;
+
     writeResult(program->fileNameOutVariables, program);
+
+    free(program->currentToken.name);
+    free(program->loopStack.stack);
+    free(program->startChar);
+    //free(program->variablesPointer);
 }
 
 void executeToken(struct Program *program) {

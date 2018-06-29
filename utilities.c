@@ -51,6 +51,7 @@ void writeResult(char *fileName, struct Program *program) {
         }
 
     } while (!feof(inFile));
+
 }
 
 int lenght(char *name){

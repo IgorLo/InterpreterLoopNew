@@ -10,6 +10,7 @@
 struct Program {
     struct Lexem currentToken;
     char *currentChar;
+    char *startChar;
     int state;
     char *fileNameOutVariables;
     struct LoopStack loopStack;
